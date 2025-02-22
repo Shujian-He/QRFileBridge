@@ -24,6 +24,8 @@ struct FileToQRView: View {
     
     var body: some View {
         VStack(spacing: 20) {
+            Text("Please select a file to generate QR Codes.")
+            
             UniversalButton(title: "Select File", backgroundColor: .blue) {
                 isFileImporterPresented = true
             }
@@ -67,9 +69,16 @@ struct FileToQRView: View {
             switch result {
             case .success(let urls):
                 if let selectedURL = urls.first {
-                    fileURL = selectedURL
-                    fileName = selectedURL.lastPathComponent
-                    generateQRCodes()
+                    // Request access to the file.
+                    if selectedURL.startAccessingSecurityScopedResource() {
+                        defer { selectedURL.stopAccessingSecurityScopedResource() }
+                        
+                        fileURL = selectedURL
+                        fileName = selectedURL.lastPathComponent
+                        generateQRCodes()
+                    } else {
+                        errorMessage = "Couldn't access the file."
+                    }
                 }
             case .failure(let error):
                 errorMessage = "Failed to import file: \(error.localizedDescription)"
@@ -77,14 +86,15 @@ struct FileToQRView: View {
         }
     }
     
-    // Generates a QR code image from a given string using CoreImage.
+    // Generates a QR Code image from a given string using CoreImage.
     func generateQRCode(from string: String) -> UIImage? {
         let data = Data(string.utf8)
         filter.message = data
         filter.correctionLevel = "L"
         if let outputImage = filter.outputImage {
-            // Scale up the QR code image.
-            let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 10, y: 10))
+            // Scale up the QR Code image.
+            let scaleFactor: CGFloat = 1.0  // Lower value means smaller image
+            let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: scaleFactor, y: scaleFactor))
             if let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) {
                 return UIImage(cgImage: cgImage)
             }
@@ -92,7 +102,7 @@ struct FileToQRView: View {
         return nil
     }
     
-    // Converts the file into a header QR and data QR codes.
+    // Converts the file into a header QR and data QR Codes.
     func generateQRCodes() {
         qrImages.removeAll()
         errorMessage = ""
@@ -111,11 +121,11 @@ struct FileToQRView: View {
         if let headerQR = generateQRCode(from: headerString) {
             qrImages.append(headerQR)
         } else {
-            errorMessage = "Failed to generate header QR code."
+            errorMessage = "Failed to generate header QR Code."
             return
         }
         
-        // Create data QR codes.
+        // Create data QR Codes.
         for i in 1...numSegments {
             let start = (i - 1) * MAX_QR_PAYLOAD_SIZE
             let end = min(i * MAX_QR_PAYLOAD_SIZE, fileSize)
@@ -131,7 +141,7 @@ struct FileToQRView: View {
             if let dataQR = generateQRCode(from: base64String) {
                 qrImages.append(dataQR)
             } else {
-                errorMessage = "Failed to generate QR code for segment \(i)."
+                errorMessage = "Failed to generate QR Code for segment \(i)."
                 return
             }
         }

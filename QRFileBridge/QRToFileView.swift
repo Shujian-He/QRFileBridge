@@ -17,7 +17,7 @@ struct QRToFileView: View {
     @State private var fileSize: Int = 0
     @State private var totalSegments: Int = 0
     @State private var segments: [Int: Data] = [:]
-    @State private var statusMessage: String = "Please scan the header QR code."
+    @State private var statusMessage: String = "Please scan the header QR Code."
     
     var body: some View {
         VStack(spacing: 10) {
@@ -67,7 +67,7 @@ struct QRToFileView: View {
                 withAnimation {
                     resetScanning()
                 }
-                statusMessage = "Please scan the header QR code."
+                statusMessage = "Please scan the header QR Code."
             }
             
             // When all segments have been received, show the "Save File" button.
@@ -119,10 +119,13 @@ struct QRToFileView: View {
             // Must process header before others.
             guard headerReceived else {
                 statusMessage = "Header not scanned yet."
+                withAnimation {
+                    isPresentingScanner = false
+                }
                 return
             }
-            // Process a data QR code.
-            // The QR code contains a base64 encoded string of [2-byte sequence number][chunk data].
+            // Process a data QR Code.
+            // The QR Code contains a base64 encoded string of [2-byte sequence number][chunk data].
             guard let decodedData = Data(base64Encoded: code) else {
                 statusMessage = "Failed to decode base64 data."
                 return
@@ -159,6 +162,9 @@ struct QRToFileView: View {
             // Check if we now have all the segments.
             if segments.count == totalSegments {
                 statusMessage = "All segments received!\nYou can now save the file."
+                withAnimation {
+                    isPresentingScanner = false
+                }
             }
         }
     }

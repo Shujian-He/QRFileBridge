@@ -8,10 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		A9B6473E2D699C560028103C /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = A9B6473D2D699C560028103C /* CodeScanner */; };
+		A9B6475C2D69C5F30028103C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A9B6475A2D69C5F30028103C /* LICENSE */; };
+		A9B6475D2D69C5F30028103C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A9B6475B2D69C5F30028103C /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A9B647232D699B5D0028103C /* QRFileBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRFileBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9B6475A2D69C5F30028103C /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A9B6475B2D69C5F30028103C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -50,6 +54,8 @@
 		A9B6471A2D699B5D0028103C = {
 			isa = PBXGroup;
 			children = (
+				A9B6475A2D69C5F30028103C /* LICENSE */,
+				A9B6475B2D69C5F30028103C /* README.md */,
 				A9B647252D699B5D0028103C /* QRFileBridge */,
 				A9B647242D699B5D0028103C /* Products */,
 			);
@@ -131,6 +137,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9B6475C2D69C5F30028103C /* LICENSE in Resources */,
+				A9B6475D2D69C5F30028103C /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

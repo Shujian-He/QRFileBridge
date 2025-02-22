@@ -6,13 +6,30 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A9B6473E2D699C560028103C /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = A9B6473D2D699C560028103C /* CodeScanner */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		A9B647232D699B5D0028103C /* QRFileBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRFileBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A9B647442D699E440028103C /* Exceptions for "QRFileBridge" folder in "QRFileBridge" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A9B647222D699B5D0028103C /* QRFileBridge */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A9B647252D699B5D0028103C /* QRFileBridge */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A9B647442D699E440028103C /* Exceptions for "QRFileBridge" folder in "QRFileBridge" target */,
+			);
 			path = QRFileBridge;
 			sourceTree = "<group>";
 		};
@@ -23,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9B6473E2D699C560028103C /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +83,7 @@
 			);
 			name = QRFileBridge;
 			packageProductDependencies = (
+				A9B6473D2D699C560028103C /* CodeScanner */,
 			);
 			productName = QRFileBridge;
 			productReference = A9B647232D699B5D0028103C /* QRFileBridge.app */;
@@ -94,6 +113,9 @@
 			);
 			mainGroup = A9B6471A2D699B5D0028103C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A9B6473C2D699C560028103C /* XCRemoteSwiftPackageReference "CodeScanner" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A9B647242D699B5D0028103C /* Products */;
 			projectDirPath = "";
@@ -255,6 +277,10 @@
 				DEVELOPMENT_TEAM = KMHDCN5B34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QRFileBridge/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need permission to scan qr codes using camera.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need permission to save qr codes to your photo library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +310,10 @@
 				DEVELOPMENT_TEAM = KMHDCN5B34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QRFileBridge/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need permission to scan qr codes using camera.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need permission to save qr codes to your photo library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -324,6 +354,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A9B6473C2D699C560028103C /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A9B6473D2D699C560028103C /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9B6473C2D699C560028103C /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A9B6471B2D699B5D0028103C /* Project object */;
 }

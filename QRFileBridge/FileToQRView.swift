@@ -17,26 +17,16 @@ struct FileToQRView: View {
     @State private var isFileImporterPresented = false
     @State private var currentIndex: Int = 0
 
-    // Maximum chunk size (same as your Python script)
+    // Maximum chunk size
     let MAX_QR_PAYLOAD_SIZE = 2210
     let context = CIContext()
     let filter = CIFilter.qrCodeGenerator()
     
     var body: some View {
         VStack(spacing: 20) {
-
-            Button(action: {
+            UniversalButton(title: "Select File", backgroundColor: .blue) {
                 isFileImporterPresented = true
-            }) {
-                Text("Select File")
-                    .font(.headline)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
             }
-            .drawingGroup() // disable stupid animation
             
             if !errorMessage.isEmpty {
                 Text(errorMessage)
@@ -45,27 +35,30 @@ struct FileToQRView: View {
             }
             
             if !qrImages.isEmpty {
-                VStack {
-                    Image(uiImage: qrImages[currentIndex])
-                        .resizable()
-                        .interpolation(.none)
-                        .scaledToFit()
-                        .frame(maxWidth: 300, maxHeight: 300)
-                        .padding()
-                    
-                    Button(action: {
+                Text("\(fileName) selected.")
+//                    .padding()
+                Image(uiImage: qrImages[currentIndex])
+                    .resizable()
+                    .interpolation(.none)
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+//                    .padding()
+                if currentIndex == 0 {
+                    Text("Showing header QR Code")
+                } else {
+                    Text("Showing \(currentIndex) of \(qrImages.count - 1) data QR Codes")
+                }
+                HStack {
+                    UniversalButton(title: "Previous QR Code", backgroundColor: .blue) {
+                        currentIndex = (currentIndex - 1 + qrImages.count) % qrImages.count
+                    }
+                    UniversalButton(title: "Next QR Code", backgroundColor: .blue) {
                         currentIndex = (currentIndex + 1) % qrImages.count
-                    }) {
-                        Text("Next QR Code")
-                            .font(.headline)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
                     }
                 }
+                UniversalButton(title: "Reset", backgroundColor: .red, action: reset)
             }
+            
         }
         .padding()
         .fileImporter(isPresented: $isFileImporterPresented,
@@ -142,6 +135,14 @@ struct FileToQRView: View {
                 return
             }
         }
+    }
+    
+    func reset() {
+        fileURL = nil
+        qrImages = []
+        fileName = ""
+        errorMessage = ""
+        currentIndex = 0
     }
 }
 

@@ -21,20 +21,6 @@ struct QRToFileView: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            // Status message to inform the user.
-            if headerReceived {
-                // Optionally, display progress of received segments.
-                Text(statusMessage + "\nReceived \(segments.count) of \(totalSegments) segments.")
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .drawingGroup() // disable stupid animation
-            } else {
-                Text(statusMessage)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .drawingGroup() // disable stupid animation
-            }
-            
             // Show the scanner view if needed.
             if isPresentingScanner {
                 CodeScannerView(codeTypes: [.qr],
@@ -47,68 +33,51 @@ struct QRToFileView: View {
                     .frame(height: 300)
                     .cornerRadius(12)
                     .padding()
+                    .transition(.opacity)
+            }
+            
+            // Status message to inform the user.
+            if headerReceived {
+                // Optionally, display progress of received segments.
+                Text(statusMessage + "\nReceived \(segments.count) of \(totalSegments) segments.")
+                    .multilineTextAlignment(.center)
+                    .padding()
+            } else {
+                Text(statusMessage)
+                    .multilineTextAlignment(.center)
+                    .padding()
             }
             
             // Button to start scanning.
-            if !isPresentingScanner {
-                Button(action: {
-                    isPresentingScanner = true
-                }) {
-                    Text("Scan QR Code")
-                        .font(.headline)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .drawingGroup() // disable stupid animation
-            } else {
-                Button(action: {
-                    isPresentingScanner = false
-                }) {
-                    Text("Close Camera")
-                        .font(.headline)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.yellow)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .drawingGroup() // disable stupid animation
-            }
-            
             Button(action: {
-                resetScanning()
-                statusMessage = "Please scan the header QR code."
+                withAnimation {
+                    isPresentingScanner.toggle()
+                }
             }) {
-                Text("Reset")
-                    .font(.headline)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                if !isPresentingScanner {
+                    UniversalText(title: "Scan QR Code", backgroundColor: .blue)
+                } else {
+                    UniversalText(title: "Close Scanner", backgroundColor: .yellow)
+                }
             }
             .drawingGroup() // disable stupid animation
+//                .geometryGroup()
+            
+            UniversalButton(title: "Reset", backgroundColor: .red) {
+                withAnimation {
+                    resetScanning()
+                }
+                statusMessage = "Please scan the header QR code."
+            }
             
             // When all segments have been received, show the "Save File" button.
             if headerReceived && segments.count == totalSegments && totalSegments > 0 {
-                Button(action: {
-                    reconstructFile()
-                }) {
-                    Text("Save File")
-                        .font(.headline)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
+                UniversalButton(title: "Save File", backgroundColor: .green) {
+                    withAnimation {
+                        reconstructFile()
+                    }
                 }
-                .drawingGroup() // disable stupid animation
             }
-            
-//            Spacer()
         }
         .padding()
     }
@@ -136,6 +105,7 @@ struct QRToFileView: View {
                 statusMessage = "Invalid header format."
                 return
             }
+            resetFile()
             headerReceived = true
             fileName = String(parts[1])
             if let size = Int(parts[2]), let total = Int(parts[3]) {
@@ -237,6 +207,10 @@ struct QRToFileView: View {
     
     func resetScanning() {
         isPresentingScanner = false
+        resetFile()
+    }
+    
+    func resetFile() {
         headerReceived = false
         fileName = ""
         fileSize = 0

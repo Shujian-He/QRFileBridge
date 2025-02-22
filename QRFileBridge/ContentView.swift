@@ -11,13 +11,20 @@ struct ContentView: View {
     var body: some View {
         TabView {
             Tab("QR To File", systemImage: "qrcode") {
+                
                 QRToFileView()
+                
+//                .defaultScrollAnchor(.center)
             }
             
             Tab("File To QR", systemImage: "folder") {
+                
                 FileToQRView()
+                
+//                .defaultScrollAnchor(.center)
             }
         }
+        .defaultScrollAnchor(.center)
     }
 }
 
